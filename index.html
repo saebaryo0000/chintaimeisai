@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>賃貸初期費用シミュレーター</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .container {
+      display: flex;
+      justify-content: space-between;
+      gap: 40px;
+    }
+    .form-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    label {
+      font-size: 14px;
+      width: 180px;
+      text-align: right;
+      margin-right: 10px;
+    }
+    input[type="number"],
+    input[type="date"],
+    select {
+      font-size: 14px;
+      padding: 6px 8px;
+      height: 30px;
+      flex: 1;
+    }
+    button {
+      font-size: 14px;
+      width: 100%;
+      padding: 8px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+      text-align: left;
+    }
+    .summary {
+      margin-top: 20px;
+      font-size: 1em;
+      font-weight: bold;
+    }
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .summary-item span:nth-child(1) {
+      flex: 0 0 150px;
+      text-align: left;
+    }
+    .summary-item span:nth-child(2) {
+      flex: 0 0 100px;
+      text-align: right;
+    }
+    .summary-item span:nth-child(3) {
+      flex: 1;
+      text-align: left;
+      color: #555;
+      font-weight: normal;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <h1>賃貸初期費用シミュレーター</h1>
+  <div class="container">
+    <div class="form-section">
+      <div class="form-group">
+        <label for="moveInDate">入居年月日</label>
+        <input type="date" id="moveInDate">
+      </div>
+      <div class="form-group">
+        <label for="rent">月額家賃 (円)</label>
+        <input type="number" id="rent" value="100000">
+      </div>
+      <div class="form-group">
+        <label for="managementFee">月額管理費 (円)</label>
+        <input type="number" id="managementFee" value="5000">
+      </div>
+      <div class="form-group">
+        <label for="deposit">敷金 (ヶ月)</label>
+        <input type="number" id="deposit" value="1">
+      </div>
+      <div class="form-group">
+        <label for="keyMoney">礼金 (ヶ月)</label>
+        <input type="number" id="keyMoney" value="1">
+      </div>
+      <div class="form-group">
+        <label for="insurance">火災保険 (円)</label>
+        <input type="number" id="insurance" value="20000">
+      </div>
+      <div class="form-group">
+        <label for="keyChangeFee">鍵交換代 (円)</label>
+        <input type="number" id="keyChangeFee" placeholder="例: 15000">
+      </div>
+      <div class="form-group">
+        <label for="guaranteeFee">保証会社保証料 (%)</label>
+        <input type="number" id="guaranteeFee" value="50">
+      </div>
+      <div class="form-group">
+        <label for="agencyFee">仲介手数料 (%)</label>
+        <input type="number" id="agencyFee" value="110">
+      </div>
+      <div class="form-group">
+        <label for="otherCost1">その他費用1 (円)</label>
+        <input type="number" id="otherCost1" placeholder="例: 10000">
+      </div>
+      <div class="form-group">
+        <label for="otherCost2">その他費用2 (円)</label>
+        <input type="number" id="otherCost2" placeholder="例: 10000">
+      </div>
+      <button onclick="calculateInitialCost()">計算する</button>
+    </div>
+
+    <div class="result-section">
+      <div class="result" id="result">初期費用合計: 0 円</div>
+      <div class="summary" id="summary">
+        <div class="summary-item"><span>敷金:</span><span id="summary-deposit">0 円</span><span id="note-deposit"></span></div>
+        <div class="summary-item"><span>礼金:</span><span id="summary-keyMoney">0 円</span><span id="note-keyMoney"></span></div>
+        <div class="summary-item"><span>前家賃:</span><span id="summary-advanceRent">0 円</span><span id="note-advanceRent"></span></div>
+        <div class="summary-item"><span>前管理費:</span><span id="summary-advanceManagementFee">0 円</span><span id="note-advanceManagementFee"></span></div>
+        <div class="summary-item"><span>日割り家賃:</span><span id="summary-dailyRent">0 円</span><span id="note-dailyRent"></span></div>
+        <div class="summary-item"><span>日割り管理費:</span><span id="summary-dailyManagementFee">0 円</span><span id="note-dailyManagementFee"></span></div>
+        <div class="summary-item"><span>火災保険:</span><span id="summary-insurance">0 円</span><span id="note-insurance"></span></div>
+        <div class="summary-item"><span>鍵交換代:</span><span id="summary-keyChangeFee">0 円</span><span id="note-keyChangeFee"></span></div>
+        <div class="summary-item"><span>保証会社保証料:</span><span id="summary-guaranteeFee">0 円</span><span id="note-guaranteeFee"></span></div>
+        <div class="summary-item"><span>仲介手数料:</span><span id="summary-agencyFee">0 円</span><span id="note-agencyFee"></span></div>
+        <div class="summary-item"><span>その他費用1:</span><span id="summary-otherCost1">0 円</span><span></span></div>
+        <div class="summary-item"><span>その他費用2:</span><span id="summary-otherCost2">0 円</span><span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function calculateDaysInMonth(year, month) {
+      return new Date(year, month, 0).getDate();
+    }
+
+    function calculateDailyFees(rent, managementFee, moveInDate) {
+      const moveIn = new Date(moveInDate);
+      const year = moveIn.getFullYear();
+      const month = moveIn.getMonth() + 1;
+      const daysInMonth = calculateDaysInMonth(year, month);
+      const daysRemaining = daysInMonth - moveIn.getDate() + 1;
+      const dailyRent = Math.floor((rent / daysInMonth) * daysRemaining);
+      const dailyManagementFee = Math.floor((managementFee / daysInMonth) * daysRemaining);
+      return { dailyRent, dailyManagementFee, daysRemaining, daysInMonth, currentMonth: month };
+    }
+
+    function calculateInitialCost() {
+      const moveInDate = document.getElementById('moveInDate').value;
+      const rent = parseFloat(document.getElementById('rent').value) || 0;
+      const deposit = parseFloat(document.getElementById('deposit').value) || 0;
+      const keyMoney = parseFloat(document.getElementById('keyMoney').value) || 0;
+      const managementFee = parseFloat(document.getElementById('managementFee').value) || 0;
+      const insurance = parseFloat(document.getElementById('insurance').value) || 0;
+      const keyChangeFee = parseFloat(document.getElementById('keyChangeFee').value) || 0;
+      const guaranteeFee = parseFloat(document.getElementById('guaranteeFee').value) || 0;
+      const agencyFee = parseFloat(document.getElementById('agencyFee').value) || 0;
+      const advanceRent = 1;
+      const advanceManagementFee = 1;
+      const otherCost1 = parseFloat(document.getElementById('otherCost1').value) || 0;
+      const otherCost2 = parseFloat(document.getElementById('otherCost2').value) || 0;
+
+      const depositCost = rent * deposit;
+      const keyMoneyCost = rent * keyMoney;
+      const guaranteeFeeCost = (rent + managementFee) * (guaranteeFee / 100);
+      const agencyFeeCost = (rent + managementFee) * (agencyFee / 100);
+      const totalAdvanceRent = rent * advanceRent;
+      const totalAdvanceManagementFee = managementFee * advanceManagementFee;
+
+      let dailyRent = 0, dailyManagementFee = 0, daysInMonth = 0, daysRemaining = 0, currentMonth = 0, nextMonth = 0;
+      if (moveInDate) {
+        const dailyFees = calculateDailyFees(rent, managementFee, moveInDate);
+        dailyRent = dailyFees.dailyRent;
+        dailyManagementFee = dailyFees.dailyManagementFee;
+        daysInMonth = dailyFees.daysInMonth;
+        daysRemaining = dailyFees.daysRemaining;
+        currentMonth = dailyFees.currentMonth;
+        nextMonth = currentMonth + 1;
+      }
+
+      const totalCost = depositCost + keyMoneyCost + insurance + keyChangeFee +
+        guaranteeFeeCost + agencyFeeCost + totalAdvanceRent + totalAdvanceManagementFee +
+        otherCost1 + otherCost2 + dailyRent + dailyManagementFee;
+
+      document.getElementById('result').innerText = `初期費用合計: ${totalCost.toLocaleString()} 円`;
+
+      // 金額表示
+      document.getElementById('summary-deposit').innerText = `${depositCost.toLocaleString()} 円`;
+      document.getElementById('summary-keyMoney').innerText = `${keyMoneyCost.toLocaleString()} 円`;
+      document.getElementById('summary-insurance').innerText = `${insurance.toLocaleString()} 円`;
+      document.getElementById('summary-keyChangeFee').innerText = `${keyChangeFee.toLocaleString()} 円`;
+      document.getElementById('summary-guaranteeFee').innerText = `${guaranteeFeeCost.toLocaleString()} 円`;
+      document.getElementById('summary-agencyFee').innerText = `${agencyFeeCost.toLocaleString()} 円`;
+      document.getElementById('summary-advanceRent').innerText = `${totalAdvanceRent.toLocaleString()} 円`;
+      document.getElementById('summary-advanceManagementFee').innerText = `${totalAdvanceManagementFee.toLocaleString()} 円`;
+      document.getElementById('summary-otherCost1').innerText = `${otherCost1.toLocaleString()} 円`;
+      document.getElementById('summary-otherCost2').innerText = `${otherCost2.toLocaleString()} 円`;
+      document.getElementById('summary-dailyRent').innerText = `${dailyRent.toLocaleString()} 円`;
+      document.getElementById('summary-dailyManagementFee').innerText = `${dailyManagementFee.toLocaleString()} 円`;
+
+      // 備考表示
+      document.getElementById('note-deposit').innerText = `賃料の${deposit}ヶ月分`;
+      document.getElementById('note-keyMoney').innerText = `賃料の${keyMoney}ヶ月分`;
+      document.getElementById('note-advanceRent').innerText = `${nextMonth}月分`;
+      document.getElementById('note-advanceManagementFee').innerText = `${nextMonth}月分`;
+      document.getElementById('note-dailyRent').innerText = `${currentMonth}月分日割${daysRemaining}日/${daysInMonth}日`;
+      document.getElementById('note-dailyManagementFee').innerText = `${currentMonth}月分日割${daysRemaining}日/${daysInMonth}日`;
+      document.getElementById('note-insurance').innerText = `概算です`;
+      document.getElementById('note-keyChangeFee').innerText = `概算です`;
+      document.getElementById('note-guaranteeFee').innerText = `賃料総額の${guaranteeFee}%`;
+      document.getElementById('note-agencyFee').innerText = `賃料の${agencyFee}%`;
+    }
+  </script>
+</body>
+</html>
