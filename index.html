@@ -84,6 +84,30 @@
       font-weight: normal;
       font-size: 0.9em;
     }
+
+    @media (max-width: 600px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .form-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      label {
+        width: auto;
+        text-align: left;
+        margin-right: 0;
+        margin-bottom: 4px;
+      }
+
+      input[type="number"],
+      input[type="date"],
+      select {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
