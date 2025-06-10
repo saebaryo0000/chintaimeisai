@@ -214,7 +214,7 @@
       const depositCost = rent * deposit;
       const keyMoneyCost = rent * keyMoney;
       const guaranteeFeeCost = (rent + managementFee) * (guaranteeFee / 100);
-      const agencyFeeCost = (rent + managementFee) * (agencyFee / 100);
+      const agencyFeeCost = rent * (agencyFee / 100);
       const totalAdvanceRent = rent * advanceRent;
       const totalAdvanceManagementFee = managementFee * advanceManagementFee;
 
