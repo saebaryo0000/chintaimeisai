@@ -262,5 +262,22 @@
       document.getElementById('note-agencyFee').innerText = `賃料の${agencyFee}%`;
     }
   </script>
+   <script>
+    // URLパラメータから初期値を自動セットする
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const fields = [
+        'moveInDate', 'rent', 'deposit', 'keyMoney',
+        'managementFee', 'insurance', 'keyChangeFee',
+        'guaranteeFee', 'agencyFee', 'otherCost1', 'otherCost2'
+      ];
+      fields.forEach(id => {
+        const value = urlParams.get(id);
+        if (value !== null) {
+          document.getElementById(id).value = value;
+        }
+      });
+    });
+  </script>
 </body>
 </html>
