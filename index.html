@@ -10,19 +10,35 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 16px;
+      background-color: #f5f5f5;
     }
     h1 {
       text-align: center;
+      color: #333;
+      margin-bottom: 30px;
     }
     .container {
       display: flex;
       justify-content: space-between;
       gap: 40px;
     }
+    .form-section {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .result-section {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
     .form-group {
       display: flex;
       align-items: center;
       margin-bottom: 12px;
+      position: relative;
     }
     label {
       font-size: 14px;
@@ -30,32 +46,97 @@
       text-align: right;
       margin-right: 10px;
     }
+    .required {
+      color: #e74c3c;
+      font-weight: bold;
+    }
     input[type="number"],
     input[type="date"],
     select {
       font-size: 14px;
-      padding: 6px 8px;
-      height: 30px;
+      padding: 8px 10px;
+      height: 36px;
       flex: 1;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      transition: border-color 0.3s;
+    }
+    input[type="number"]:focus,
+    input[type="date"]:focus {
+      border-color: #4CAF50;
+      outline: none;
+    }
+    input.error {
+      border-color: #e74c3c;
+      background-color: #fdf2f2;
+    }
+    .error-message {
+      position: absolute;
+      right: 0;
+      top: 40px;
+      color: #e74c3c;
+      font-size: 12px;
+      background: white;
+      padding: 2px 6px;
+      border-radius: 3px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
     }
     button {
       font-size: 14px;
-      width: 100%;
-      padding: 8px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .calculate-btn {
+      flex: 2;
       background-color: #4CAF50;
       color: white;
-      border: none;
-      cursor: pointer;
     }
-    button:hover {
+    .calculate-btn:hover {
       background-color: #45a049;
+    }
+    .reset-btn {
+      flex: 1;
+      background-color: #6c757d;
+      color: white;
+    }
+    .reset-btn:hover {
+      background-color: #5a6268;
+    }
+    .print-btn {
+      flex: 1;
+      background-color: #17a2b8;
+      color: white;
+    }
+    .print-btn:hover {
+      background-color: #138496;
+    }
+    .share-btn {
+      flex: 1;
+      background-color: #ffc107;
+      color: #212529;
+    }
+    .share-btn:hover {
+      background-color: #e0a800;
     }
 
     .result {
       margin-top: 20px;
-      font-size: 1.2em;
+      font-size: 1.4em;
       font-weight: bold;
-      text-align: left;
+      text-align: center;
+      padding: 15px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 8px;
     }
     .summary {
       margin-top: 20px;
@@ -68,6 +149,12 @@
       margin-bottom: 10px;
       align-items: baseline;
       gap: 10px;
+      padding: 8px;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    .summary-item:hover {
+      background-color: #f8f9fa;
     }
     .summary-item span:nth-child(1) {
       flex: 0 0 150px;
@@ -76,6 +163,7 @@
     .summary-item span:nth-child(2) {
       flex: 0 0 100px;
       text-align: right;
+      color: #2c3e50;
     }
     .summary-item span:nth-child(3) {
       flex: 1;
@@ -85,9 +173,59 @@
       font-size: 0.9em;
     }
 
-    @media (max-width: 600px) {
+    .note {
+      background-color: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      padding: 10px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .tooltip {
+      position: relative;
+      cursor: help;
+    }
+    .tooltip:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      z-index: 100;
+    }
+
+    .success-message {
+      background-color: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0;
+      display: none;
+    }
+
+    @media print {
+      .form-section, .button-group {
+        display: none;
+      }
+      body {
+        background-color: white;
+      }
+      .result-section {
+        box-shadow: none;
+      }
+    }
+
+    @media (max-width: 768px) {
       .container {
         flex-direction: column;
+        gap: 20px;
       }
 
       .form-group {
@@ -105,7 +243,17 @@
       input[type="number"],
       input[type="date"],
       select {
-        width: 50%;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .error-message {
+        position: static;
+        margin-top: 5px;
       }
     }
   </style>
@@ -115,50 +263,77 @@
   <div class="container">
     <div class="form-section">
       <div class="form-group">
-        <label for="moveInDate">入居年月日</label>
-        <input type="date" id="moveInDate">
+        <label for="moveInDate">入居年月日 <span class="required">*</span></label>
+        <input type="date" id="moveInDate" required>
+        <div class="error-message" id="error-moveInDate"></div>
       </div>
       <div class="form-group">
-        <label for="rent">月額家賃 (円)</label>
-        <input type="number" id="rent" value="100000">
+        <label for="rent">月額家賃 (円) <span class="required">*</span></label>
+        <input type="number" id="rent" value="100000" min="0" max="10000000" required>
+        <div class="error-message" id="error-rent"></div>
       </div>
       <div class="form-group">
         <label for="managementFee">月額管理費 (円)</label>
-        <input type="number" id="managementFee" value="5000">
+        <input type="number" id="managementFee" value="5000" min="0" max="100000">
+        <div class="error-message" id="error-managementFee"></div>
       </div>
       <div class="form-group">
-        <label for="deposit">敷金 (ヶ月)</label>
-        <input type="number" id="deposit" value="1">
+        <label for="deposit" class="tooltip" data-tooltip="通常0-2ヶ月分">敷金 (ヶ月)</label>
+        <input type="number" id="deposit" value="1" min="0" max="12" step="0.1">
+        <div class="error-message" id="error-deposit"></div>
       </div>
       <div class="form-group">
-        <label for="keyMoney">礼金 (ヶ月)</label>
-        <input type="number" id="keyMoney" value="1">
+        <label for="keyMoney" class="tooltip" data-tooltip="通常0-2ヶ月分">礼金 (ヶ月)</label>
+        <input type="number" id="keyMoney" value="1" min="0" max="12" step="0.1">
+        <div class="error-message" id="error-keyMoney"></div>
       </div>
       <div class="form-group">
         <label for="insurance">火災保険 (円)</label>
-        <input type="number" id="insurance" value="20000">
+        <input type="number" id="insurance" value="20000" min="0" max="100000">
+        <div class="error-message" id="error-insurance"></div>
       </div>
       <div class="form-group">
         <label for="keyChangeFee">鍵交換代 (円)</label>
-        <input type="number" id="keyChangeFee" placeholder="例: 15000">
+        <input type="number" id="keyChangeFee" placeholder="例: 15000" min="0" max="100000">
+        <div class="error-message" id="error-keyChangeFee"></div>
       </div>
       <div class="form-group">
-        <label for="guaranteeFee">保証会社保証料 (%)</label>
-        <input type="number" id="guaranteeFee" value="50">
+        <label for="guaranteeFee" class="tooltip" data-tooltip="月額賃料+管理費の合計に対する割合">保証会社保証料 (%)</label>
+        <input type="number" id="guaranteeFee" value="50" min="0" max="200" step="0.1">
+        <div class="error-message" id="error-guaranteeFee"></div>
       </div>
       <div class="form-group">
-        <label for="agencyFee">仲介手数料 (%)</label>
-        <input type="number" id="agencyFee" value="110">
+        <label for="agencyFee" class="tooltip" data-tooltip="賃料に対する割合(上限110%)">仲介手数料 (%)</label>
+        <input type="number" id="agencyFee" value="110" min="0" max="110" step="0.1">
+        <div class="error-message" id="error-agencyFee"></div>
       </div>
       <div class="form-group">
         <label for="otherCost1">その他費用1 (円)</label>
-        <input type="number" id="otherCost1" placeholder="例: 10000">
+        <input type="number" id="otherCost1" placeholder="例: 清掃費 10000" min="0" max="1000000">
+        <div class="error-message" id="error-otherCost1"></div>
       </div>
       <div class="form-group">
         <label for="otherCost2">その他費用2 (円)</label>
-        <input type="number" id="otherCost2" placeholder="例: 10000">
+        <input type="number" id="otherCost2" placeholder="例: 害虫駆除 5000" min="0" max="1000000">
+        <div class="error-message" id="error-otherCost2"></div>
       </div>
-      <button onclick="calculateInitialCost()">計算する</button>
+
+      <div class="button-group">
+        <button class="calculate-btn" onclick="calculateInitialCost()">計算する</button>
+        <button class="reset-btn" onclick="resetForm()">リセット</button>
+        <button class="print-btn" onclick="printResult()">印刷</button>
+        <button class="share-btn" onclick="shareURL()">URL共有</button>
+      </div>
+
+      <div class="success-message" id="success-message"></div>
+
+      <div class="note">
+        <strong>※ 注意事項</strong><br>
+        ・日割り計算は入居日から月末までの日数で計算されます<br>
+        ・保証料は賃料と管理費の合計額に対して計算されます<br>
+        ・仲介手数料は法的上限の110%（税込）までです<br>
+        ・実際の費用は物件や不動産会社により異なる場合があります
+      </div>
     </div>
 
     <div class="result-section">
@@ -191,12 +366,45 @@
       const month = moveIn.getMonth() + 1;
       const daysInMonth = calculateDaysInMonth(year, month);
       const daysRemaining = daysInMonth - moveIn.getDate() + 1;
-      const dailyRent = Math.floor((rent / daysInMonth) * daysRemaining);
-      const dailyManagementFee = Math.floor((managementFee / daysInMonth) * daysRemaining);
+      const dailyRent = Math.round((rent / daysInMonth) * daysRemaining);
+      const dailyManagementFee = Math.round((managementFee / daysInMonth) * daysRemaining);
       return { dailyRent, dailyManagementFee, daysRemaining, daysInMonth, currentMonth: month };
     }
 
+    function validateInput(id, value, min = 0, max = Infinity, required = false) {
+      const element = document.getElementById(id);
+      const errorElement = document.getElementById(`error-${id}`);
+      
+      if (required && (!value || value === '')) {
+        element.classList.add('error');
+        errorElement.textContent = '必須項目です';
+        errorElement.style.display = 'block';
+        return false;
+      }
+      
+      if (value !== '' && (isNaN(value) || value < min || value > max)) {
+        element.classList.add('error');
+        errorElement.textContent = `${min}〜${max === Infinity ? '制限なし' : max}の範囲で入力してください`;
+        errorElement.style.display = 'block';
+        return false;
+      }
+      
+      element.classList.remove('error');
+      errorElement.style.display = 'none';
+      return true;
+    }
+
+    function clearErrors() {
+      const errorElements = document.querySelectorAll('.error-message');
+      const inputElements = document.querySelectorAll('input.error');
+      
+      errorElements.forEach(el => el.style.display = 'none');
+      inputElements.forEach(el => el.classList.remove('error'));
+    }
+
     function calculateInitialCost() {
+      clearErrors();
+      
       const moveInDate = document.getElementById('moveInDate').value;
       const rent = parseFloat(document.getElementById('rent').value) || 0;
       const deposit = parseFloat(document.getElementById('deposit').value) || 0;
@@ -206,15 +414,34 @@
       const keyChangeFee = parseFloat(document.getElementById('keyChangeFee').value) || 0;
       const guaranteeFee = parseFloat(document.getElementById('guaranteeFee').value) || 0;
       const agencyFee = parseFloat(document.getElementById('agencyFee').value) || 0;
-      const advanceRent = 1;
-      const advanceManagementFee = 1;
       const otherCost1 = parseFloat(document.getElementById('otherCost1').value) || 0;
       const otherCost2 = parseFloat(document.getElementById('otherCost2').value) || 0;
 
-      const depositCost = rent * deposit;
-      const keyMoneyCost = rent * keyMoney;
-      const guaranteeFeeCost = (rent + managementFee) * (guaranteeFee / 100);
-      const agencyFeeCost = rent * (agencyFee / 100);
+      // バリデーション
+      let isValid = true;
+      isValid &= validateInput('moveInDate', moveInDate, 0, Infinity, true);
+      isValid &= validateInput('rent', rent, 1, 10000000, true);
+      isValid &= validateInput('managementFee', managementFee, 0, 100000);
+      isValid &= validateInput('deposit', deposit, 0, 12);
+      isValid &= validateInput('keyMoney', keyMoney, 0, 12);
+      isValid &= validateInput('insurance', insurance, 0, 100000);
+      isValid &= validateInput('keyChangeFee', keyChangeFee, 0, 100000);
+      isValid &= validateInput('guaranteeFee', guaranteeFee, 0, 200);
+      isValid &= validateInput('agencyFee', agencyFee, 0, 110);
+      isValid &= validateInput('otherCost1', otherCost1, 0, 1000000);
+      isValid &= validateInput('otherCost2', otherCost2, 0, 1000000);
+
+      if (!isValid) {
+        return;
+      }
+
+      const advanceRent = 1;
+      const advanceManagementFee = 1;
+
+      const depositCost = Math.round(rent * deposit);
+      const keyMoneyCost = Math.round(rent * keyMoney);
+      const guaranteeFeeCost = Math.round((rent + managementFee) * (guaranteeFee / 100));
+      const agencyFeeCost = Math.round(rent * (agencyFee / 100));
       const totalAdvanceRent = rent * advanceRent;
       const totalAdvanceManagementFee = managementFee * advanceManagementFee;
 
@@ -250,19 +477,87 @@
       document.getElementById('summary-dailyManagementFee').innerText = `${dailyManagementFee.toLocaleString()} 円`;
 
       // 備考表示
-      document.getElementById('note-deposit').innerText = `賃料の${deposit}ヶ月分`;
-      document.getElementById('note-keyMoney').innerText = `賃料の${keyMoney}ヶ月分`;
+      document.getElementById('note-deposit').innerText = deposit > 0 ? `賃料の${deposit}ヶ月分` : '';
+      document.getElementById('note-keyMoney').innerText = keyMoney > 0 ? `賃料の${keyMoney}ヶ月分` : '';
       document.getElementById('note-advanceRent').innerText = `${nextMonth}月分`;
-      document.getElementById('note-advanceManagementFee').innerText = `${nextMonth}月分`;
-      document.getElementById('note-dailyRent').innerText = `${currentMonth}月分日割${daysRemaining}日/${daysInMonth}日`;
-      document.getElementById('note-dailyManagementFee').innerText = `${currentMonth}月分日割${daysRemaining}日/${daysInMonth}日`;
-      document.getElementById('note-insurance').innerText = `概算です`;
-      document.getElementById('note-keyChangeFee').innerText = `概算です`;
-      document.getElementById('note-guaranteeFee').innerText = `賃料総額の${guaranteeFee}%`;
-      document.getElementById('note-agencyFee').innerText = `賃料の${agencyFee}%`;
+      document.getElementById('note-advanceManagementFee').innerText = managementFee > 0 ? `${nextMonth}月分` : '';
+      document.getElementById('note-dailyRent').innerText = moveInDate ? `${currentMonth}月分日割${daysRemaining}日/${daysInMonth}日` : '';
+      document.getElementById('note-dailyManagementFee').innerText = (moveInDate && managementFee > 0) ? `${currentMonth}月分日割${daysRemaining}日/${daysInMonth}日` : '';
+      document.getElementById('note-insurance').innerText = insurance > 0 ? `2年間の保険料概算` : '';
+      document.getElementById('note-keyChangeFee').innerText = keyChangeFee > 0 ? `概算費用` : '';
+      document.getElementById('note-guaranteeFee').innerText = guaranteeFee > 0 ? `賃料総額の${guaranteeFee}%` : '';
+      document.getElementById('note-agencyFee').innerText = agencyFee > 0 ? `賃料の${agencyFee}%` : '';
     }
-  </script>
-   <script>
+
+    function resetForm() {
+      if (confirm('入力内容をリセットしますか？')) {
+        document.querySelectorAll('input').forEach(input => {
+          if (input.type === 'number') {
+            input.value = '';
+          } else if (input.type === 'date') {
+            input.value = '';
+          }
+        });
+        
+        // デフォルト値を設定
+        document.getElementById('rent').value = '100000';
+        document.getElementById('managementFee').value = '5000';
+        document.getElementById('deposit').value = '1';
+        document.getElementById('keyMoney').value = '1';
+        document.getElementById('insurance').value = '20000';
+        document.getElementById('guaranteeFee').value = '50';
+        document.getElementById('agencyFee').value = '110';
+        
+        clearErrors();
+        
+        // 結果をリセット
+        document.getElementById('result').innerText = '初期費用合計: 0 円';
+        document.querySelectorAll('[id^="summary-"]').forEach(el => el.innerText = '0 円');
+        document.querySelectorAll('[id^="note-"]').forEach(el => el.innerText = '');
+      }
+    }
+
+    function printResult() {
+      window.print();
+    }
+
+    function shareURL() {
+      const params = new URLSearchParams();
+      const fields = [
+        'moveInDate', 'rent', 'deposit', 'keyMoney',
+        'managementFee', 'insurance', 'keyChangeFee',
+        'guaranteeFee', 'agencyFee', 'otherCost1', 'otherCost2'
+      ];
+      
+      fields.forEach(id => {
+        const value = document.getElementById(id).value;
+        if (value) {
+          params.set(id, value);
+        }
+      });
+      
+      const url = window.location.origin + window.location.pathname + '?' + params.toString();
+      
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => {
+          showSuccessMessage('URLをクリップボードにコピーしました！');
+        }).catch(() => {
+          prompt('以下のURLをコピーしてください:', url);
+        });
+      } else {
+        prompt('以下のURLをコピーしてください:', url);
+      }
+    }
+
+    function showSuccessMessage(message) {
+      const successElement = document.getElementById('success-message');
+      successElement.textContent = message;
+      successElement.style.display = 'block';
+      setTimeout(() => {
+        successElement.style.display = 'none';
+      }, 3000);
+    }
+
     // URLパラメータから初期値を自動セットする
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -276,6 +571,27 @@
         if (value !== null) {
           document.getElementById(id).value = value;
         }
+      });
+      
+      // URLパラメータがある場合は自動計算
+      if (urlParams.get('rent')) {
+        calculateInitialCost();
+      }
+    });
+
+    // 入力時のリアルタイムバリデーション
+    document.addEventListener('DOMContentLoaded', () => {
+      const inputs = document.querySelectorAll('input[type="number"], input[type="date"]');
+      inputs.forEach(input => {
+        input.addEventListener('blur', () => {
+          const id = input.id;
+          const value = input.value;
+          const min = parseFloat(input.min) || 0;
+          const max = parseFloat(input.max) || Infinity;
+          const required = input.hasAttribute('required');
+          
+          validateInput(id, value, min, max, required);
+        });
       });
     });
   </script>
