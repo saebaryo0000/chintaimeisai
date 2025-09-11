@@ -586,11 +586,15 @@
         input.addEventListener('blur', () => {
           const id = input.id;
           const value = input.value;
-          const min = parseFloat(input.min) || 0;
-          const max = parseFloat(input.max) || Infinity;
           const required = input.hasAttribute('required');
           
-          validateInput(id, value, min, max, required);
+          if (input.type === 'date') {
+            validateInput(id, value, 0, Infinity, required);
+          } else {
+            const min = parseFloat(input.min) || 0;
+            const max = parseFloat(input.max) || Infinity;
+            validateInput(id, value, min, max, required);
+          }
         });
       });
     });
