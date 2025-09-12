@@ -255,6 +255,40 @@
         position: static;
         margin-top: 5px;
       }
+
+      /* スマホ表示での備考欄レイアウト調整 */
+      .summary-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+
+      .summary-item span:nth-child(1) {
+        flex: none;
+        width: 100%;
+        font-size: 0.9em;
+        font-weight: bold;
+      }
+
+      .summary-item span:nth-child(2) {
+        flex: none;
+        width: 100%;
+        text-align: left;
+        font-size: 1.1em;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 2px;
+      }
+
+      .summary-item span:nth-child(3) {
+        flex: none;
+        width: 100%;
+        text-align: left;
+        color: #666;
+        font-weight: normal;
+        font-size: 0.85em;
+        padding-left: 8px;
+      }
     }
   </style>
 </head>
