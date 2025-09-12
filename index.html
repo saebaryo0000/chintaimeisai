@@ -382,16 +382,32 @@
         return false;
       }
       
-      if (value !== '' && (isNaN(value) || value < min || value > max)) {
-        element.classList.add('error');
-        errorElement.textContent = `${min}〜${max === Infinity ? '制限なし' : max}の範囲で入力してください`;
-        errorElement.style.display = 'block';
-        return false;
+      // date型の場合は日付の妥当性をチェック
+      if (element.type === 'date') {
+        if (value && !isValidDate(value)) {
+          element.classList.add('error');
+          errorElement.textContent = '有効な日付を入力してください';
+          errorElement.style.display = 'block';
+          return false;
+        }
+      } else {
+        // number型の場合は数値範囲をチェック
+        if (value !== '' && (isNaN(value) || value < min || value > max)) {
+          element.classList.add('error');
+          errorElement.textContent = `${min}〜${max === Infinity ? '制限なし' : max}の範囲で入力してください`;
+          errorElement.style.display = 'block';
+          return false;
+        }
       }
       
       element.classList.remove('error');
       errorElement.style.display = 'none';
       return true;
+    }
+
+    function isValidDate(dateString) {
+      const date = new Date(dateString);
+      return date instanceof Date && !isNaN(date) && dateString === date.toISOString().split('T')[0];
     }
 
     function clearErrors() {
@@ -589,8 +605,10 @@
           const required = input.hasAttribute('required');
           
           if (input.type === 'date') {
+            // date型の場合はrequiredチェックのみ行う
             validateInput(id, value, 0, Infinity, required);
           } else {
+            // number型の場合は数値範囲をチェック
             const min = parseFloat(input.min) || 0;
             const max = parseFloat(input.max) || Infinity;
             validateInput(id, value, min, max, required);
