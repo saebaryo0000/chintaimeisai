@@ -296,78 +296,80 @@
   <h1>賃貸初期費用シミュレーター</h1>
   <div class="container">
     <div class="form-section">
-      <div class="form-group">
-        <label for="moveInDate">入居年月日 <span class="required">*</span></label>
-        <input type="date" id="moveInDate" required>
-        <div class="error-message" id="error-moveInDate"></div>
-      </div>
-      <div class="form-group">
-        <label for="rent">月額家賃 (円) <span class="required">*</span></label>
-        <input type="number" id="rent" value="100000" min="0" max="10000000" required>
-        <div class="error-message" id="error-rent"></div>
-      </div>
-      <div class="form-group">
-        <label for="managementFee">月額管理費 (円)</label>
-        <input type="number" id="managementFee" value="5000" min="0" max="100000">
-        <div class="error-message" id="error-managementFee"></div>
-      </div>
-      <div class="form-group">
-        <label for="deposit" class="tooltip" data-tooltip="通常0-2ヶ月分">敷金 (ヶ月)</label>
-        <input type="number" id="deposit" value="1" min="0" max="12" step="0.1">
-        <div class="error-message" id="error-deposit"></div>
-      </div>
-      <div class="form-group">
-        <label for="keyMoney" class="tooltip" data-tooltip="通常0-2ヶ月分">礼金 (ヶ月)</label>
-        <input type="number" id="keyMoney" value="1" min="0" max="12" step="0.1">
-        <div class="error-message" id="error-keyMoney"></div>
-      </div>
-      <div class="form-group">
-        <label for="insurance">火災保険 (円)</label>
-        <input type="number" id="insurance" value="20000" min="0" max="100000">
-        <div class="error-message" id="error-insurance"></div>
-      </div>
-      <div class="form-group">
-        <label for="keyChangeFee">鍵交換代 (円)</label>
-        <input type="number" id="keyChangeFee" placeholder="例: 15000" min="0" max="100000">
-        <div class="error-message" id="error-keyChangeFee"></div>
-      </div>
-      <div class="form-group">
-        <label for="guaranteeFee" class="tooltip" data-tooltip="月額賃料+管理費の合計に対する割合">保証会社保証料 (%)</label>
-        <input type="number" id="guaranteeFee" value="50" min="0" max="200" step="0.1">
-        <div class="error-message" id="error-guaranteeFee"></div>
-      </div>
-      <div class="form-group">
-        <label for="agencyFee" class="tooltip" data-tooltip="賃料に対する割合(上限110%)">仲介手数料 (%)</label>
-        <input type="number" id="agencyFee" value="110" min="0" max="110" step="0.1">
-        <div class="error-message" id="error-agencyFee"></div>
-      </div>
-      <div class="form-group">
-        <label for="otherCost1">その他費用1 (円)</label>
-        <input type="number" id="otherCost1" placeholder="例: 清掃費 10000" min="0" max="1000000">
-        <div class="error-message" id="error-otherCost1"></div>
-      </div>
-      <div class="form-group">
-        <label for="otherCost2">その他費用2 (円)</label>
-        <input type="number" id="otherCost2" placeholder="例: 害虫駆除 5000" min="0" max="1000000">
-        <div class="error-message" id="error-otherCost2"></div>
-      </div>
+      <form id="cost-form">
+        <div class="form-group">
+          <label for="moveInDate">入居年月日 <span class="required">*</span></label>
+          <input type="date" id="moveInDate" required>
+          <div class="error-message" id="error-moveInDate"></div>
+        </div>
+        <div class="form-group">
+          <label for="rent">月額家賃 (円) <span class="required">*</span></label>
+          <input type="number" id="rent" value="100000" min="0" max="10000000" required>
+          <div class="error-message" id="error-rent"></div>
+        </div>
+        <div class="form-group">
+          <label for="managementFee">月額管理費 (円)</label>
+          <input type="number" id="managementFee" value="5000" min="0" max="100000">
+          <div class="error-message" id="error-managementFee"></div>
+        </div>
+        <div class="form-group">
+          <label for="deposit" class="tooltip" data-tooltip="通常0-2ヶ月分">敷金 (ヶ月)</label>
+          <input type="number" id="deposit" value="1" min="0" max="12" step="0.1">
+          <div class="error-message" id="error-deposit"></div>
+        </div>
+        <div class="form-group">
+          <label for="keyMoney" class="tooltip" data-tooltip="通常0-2ヶ月分">礼金 (ヶ月)</label>
+          <input type="number" id="keyMoney" value="1" min="0" max="12" step="0.1">
+          <div class="error-message" id="error-keyMoney"></div>
+        </div>
+        <div class="form-group">
+          <label for="insurance">火災保険 (円)</label>
+          <input type="number" id="insurance" value="20000" min="0" max="100000">
+          <div class="error-message" id="error-insurance"></div>
+        </div>
+        <div class="form-group">
+          <label for="keyChangeFee">鍵交換代 (円)</label>
+          <input type="number" id="keyChangeFee" placeholder="例: 15000" min="0" max="100000">
+          <div class="error-message" id="error-keyChangeFee"></div>
+        </div>
+        <div class="form-group">
+          <label for="guaranteeFee" class="tooltip" data-tooltip="月額賃料+管理費の合計に対する割合">保証会社保証料 (%)</label>
+          <input type="number" id="guaranteeFee" value="50" min="0" max="200" step="0.1">
+          <div class="error-message" id="error-guaranteeFee"></div>
+        </div>
+        <div class="form-group">
+          <label for="agencyFee" class="tooltip" data-tooltip="賃料に対する割合(上限110%)">仲介手数料 (%)</label>
+          <input type="number" id="agencyFee" value="110" min="0" max="110" step="0.1">
+          <div class="error-message" id="error-agencyFee"></div>
+        </div>
+        <div class="form-group">
+          <label for="otherCost1">その他費用1 (円)</label>
+          <input type="number" id="otherCost1" placeholder="例: 清掃費 10000" min="0" max="1000000">
+          <div class="error-message" id="error-otherCost1"></div>
+        </div>
+        <div class="form-group">
+          <label for="otherCost2">その他費用2 (円)</label>
+          <input type="number" id="otherCost2" placeholder="例: 害虫駆除 5000" min="0" max="1000000">
+          <div class="error-message" id="error-otherCost2"></div>
+        </div>
 
-      <div class="button-group">
-        <button class="calculate-btn" onclick="calculateInitialCost()">計算する</button>
-        <button class="reset-btn" onclick="resetForm()">リセット</button>
-        <button class="print-btn" onclick="printResult()">印刷</button>
-        <button class="share-btn" onclick="shareURL()">URL共有</button>
-      </div>
+        <div class="button-group">
+          <button type="submit" class="calculate-btn">計算する</button>
+          <button type="button" class="reset-btn" onclick="resetForm()">リセット</button>
+          <button type="button" class="print-btn" onclick="printResult()">印刷</button>
+          <button type="button" class="share-btn" onclick="shareURL()">URL共有</button>
+        </div>
 
-      <div class="success-message" id="success-message"></div>
+        <div class="success-message" id="success-message"></div>
 
-      <div class="note">
-        <strong>※ 注意事項</strong><br>
-        ・日割り計算は入居日から月末までの日数で計算されます<br>
-        ・保証料は賃料と管理費の合計額に対して計算されます<br>
-        ・仲介手数料は法的上限の110%（税込）までです<br>
-        ・実際の費用は物件や不動産会社により異なる場合があります
-      </div>
+        <div class="note">
+          <strong>※ 注意事項</strong><br>
+          ・日割り計算は入居日から月末までの日数で計算されます<br>
+          ・保証料は賃料と管理費の合計額に対して計算されます<br>
+          ・仲介手数料は法的上限の110%（税込）までです<br>
+          ・実際の費用は物件や不動産会社により異なる場合があります
+        </div>
+      </form>
     </div>
 
     <div class="result-section">
@@ -637,7 +639,7 @@
           const id = input.id;
           const value = input.value;
           const required = input.hasAttribute('required');
-          
+
           if (input.type === 'date') {
             // date型の場合はrequiredチェックのみ行う
             validateInput(id, value, 0, Infinity, required);
@@ -649,6 +651,14 @@
           }
         });
       });
+
+      const costForm = document.getElementById('cost-form');
+      if (costForm) {
+        costForm.addEventListener('submit', event => {
+          event.preventDefault();
+          calculateInitialCost();
+        });
+      }
     });
   </script>
 </body>
